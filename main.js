@@ -2,7 +2,7 @@ const container = document.querySelector('.container');
 
 function createGrid(dimension) {
   for (let i = 0; i < dimension; i++) {
-    const column = createcolumn(dimension)
+    const column = createColumn(dimension)
     container.appendChild(column);
 
     column.offsetHeight = container.offsetHeight / dimension;
@@ -10,7 +10,7 @@ function createGrid(dimension) {
   }
 }
 
-function createcolumn(dimension) {
+function createColumn(dimension) {
   const column = document.createElement('div');
   column.classList.add('column');
 
