@@ -21,6 +21,10 @@ function createColumn(dimension) {
     const box = document.createElement('div');
     box.classList.add('box');
 
+    box.addEventListener('mouseover', () => {
+      box.style.backgroundColor = 'black';
+    });
+
     column.appendChild(box);
 
     box.style.width = container.offsetWidth / (dimension ** 2);
@@ -30,4 +34,8 @@ function createColumn(dimension) {
   return column;
 }
 
-createGrid(16);c
+function runSketchPad(dimension) {
+  createGrid(dimension)
+}
+
+runSketchPad(75);
