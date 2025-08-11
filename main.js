@@ -1,4 +1,15 @@
 const container = document.querySelector('.container');
+let isMouseDown = false;
+
+function checkMouseDown() {
+  document.addEventListener('mousedown', () => {
+      isMouseDown = true;
+  })
+
+  document.addEventListener('mouseup', () => {
+      isMouseDown = false;
+  })
+}
 
 function createGrid(dimension) {
   for (let i = 0; i < dimension; i++) {
@@ -22,7 +33,9 @@ function createColumn(dimension) {
     box.classList.add('box');
 
     box.addEventListener('mouseover', () => {
-      box.style.backgroundColor = 'black';
+      if (isMouseDown) {
+        box.style.backgroundColor = 'black';
+      }
     });
 
     column.appendChild(box);
@@ -35,7 +48,8 @@ function createColumn(dimension) {
 }
 
 function runSketchPad(dimension) {
-  createGrid(dimension)
+  checkMouseDown();
+  createGrid(dimension);
 }
 
 runSketchPad(75);
