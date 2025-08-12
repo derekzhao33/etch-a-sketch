@@ -11,45 +11,59 @@ function checkMouseDown() {
   })
 }
 
-function createGrid(dimension) {
-  for (let i = 0; i < dimension; i++) {
-    const column = createColumn(dimension)
+function createGrid(columns) {
+  for (let i = 0; i < columns; i++) {
+    const column = createColumn(columns)
     container.appendChild(column);
 
-    column.offsetHeight = container.offsetHeight / dimension;
-    column.offsetWidth = container.offsetWidth / dimension;
+    column.offsetHeight = container.offsetHeight / columns;
+    column.offsetWidth = container.offsetWidth / columns;
   }
 }
 
-function createColumn(dimension) {
+function determineNumBoxesInColumn(columns) {
+  const heightWidthRatio = container.offsetHeight / container.offsetWidth;
+  const numBoxesRaw = columns * heightWidthRatio;
+  const numBoxesRounded = Math.floor(numBoxesRaw);
+
+  return numBoxesRounded;
+}
+
+function createColumn(columns) {
   const column = document.createElement('div');
   column.classList.add('column');
 
   column.style.height = container.offsetHeight;
-  column.style.width = container.offsetWidth / dimension;
+  column.style.width = container.offsetWidth / columns;
 
-  for (let i = 0; i < dimension; i++) {
-    const box = document.createElement('div');
-    box.classList.add('box');
+  const boxes = determineNumBoxesInColumn(columns);
 
-    box.addEventListener('mouseover', () => {
-      if (isMouseDown) {
-        box.style.backgroundColor = 'black';
+  for (let i = 0; i < boxes; i++) {
+    const box = {
+      obj: document.createElement('div'),
+      isFilled: false
+    };
+
+    box.obj.classList.add('box');
+
+    box.obj.addEventListener('mouseover', () => {
+      if (isMouseDown && !box.isFilled) {
+        box.obj.style.backgroundColor = 'black';
       }
     });
 
-    column.appendChild(box);
+    column.appendChild(box.obj);
 
-    box.style.width = container.offsetWidth / (dimension ** 2);
-    box.style.height = container.offsetHeight / (dimension ** 2);
+    box.obj.style.width = container.offsetWidth / (columns ** 2);
+    box.obj.style.height = container.offsetHeight / (columns ** 2);
   }
 
   return column;
 }
 
-function runSketchPad(dimension) {
+function runSketchPad(columns) {
   checkMouseDown();
-  createGrid(dimension);
+  createGrid(columns);
 }
 
-runSketchPad(75);
+runSketchPad(175);
