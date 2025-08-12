@@ -13,13 +13,11 @@ body {
 
 .container {
   display: flex;
+  height: 100%;
+  flex: 1;
   flex-wrap: wrap;
-  width: 30%;
-  aspect-ratio: 1 / 1;
-  border-color: blue;
-  border-style: solid;
-  border-color: black;
   border-width: 1px;
+  background-color: white;
 }
 
 .column {
@@ -30,6 +28,16 @@ body {
 
 .box {
   flex: 1 1 0;
+}
+
+.bar {
+  border-style: none;
+  width: 75px;
+  height: 100%;
+  box-shadow: 0 5px 10px rgba(154,160,185,.05), 0 15px 40px rgba(166,173,201,.2);
+  background-color: #E4E4E7;
+  position: relative;
+  z-index: 10;
 }
 
 
