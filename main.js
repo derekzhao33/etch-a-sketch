@@ -3,6 +3,11 @@ let isMouseDown = false;
 
 const slider = document.querySelector('.range-slider');
 
+function addSliderEventListener() {
+  slider.addEventListener('input', () => {
+    
+  })
+}
 
 function checkMouseDown() {
   document.addEventListener('mousedown', () => {
@@ -69,4 +74,4 @@ function runSketchPad(columns) {
   createGrid(columns);
 }
 
-runSketchPad(50);
+runSketchPad(slider.value);
