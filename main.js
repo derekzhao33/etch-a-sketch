@@ -1,12 +1,14 @@
-const container = document.querySelector('.container');
+const body = document.body;
+
 let isMouseDown = false;
 
 const slider = document.querySelector('.range-slider');
 
+// TODO: Must create a new container each time the slider changes
 function addSliderEventListener() {
-  slider.addEventListener('input', () => {
-    
-  })
+  slider.onmouseup = function() {
+
+  }
 }
 
 function checkMouseDown() {
@@ -19,7 +21,15 @@ function checkMouseDown() {
   })
 }
 
+function clearGrid() {
+
+}
+
 function createGrid(columns) {
+  const container = document.createElement('div');
+  container.className = 'container';
+  body.appendChild(container);
+
   for (let i = 0; i < columns; i++) {
     const column = createColumn(columns)
     container.appendChild(column);
@@ -39,8 +49,9 @@ function determineNumBoxesInColumn(columns) {
 
 function createColumn(columns) {
   const column = document.createElement('div');
-  column.classList.add('column');
+  column.className = 'column';
 
+  // TODO: container is not accessable from this scope, need to fix
   column.style.height = container.offsetHeight;
   column.style.width = container.offsetWidth / columns;
 
@@ -69,9 +80,10 @@ function createColumn(columns) {
   return column;
 }
 
-function runSketchPad(columns) {
+function main() {
+  addSliderEventListener();
+  createGrid(50)
   checkMouseDown();
-  createGrid(columns);
 }
 
-runSketchPad(slider.value);
+main();
