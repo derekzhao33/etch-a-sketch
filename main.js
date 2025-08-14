@@ -1,13 +1,33 @@
 const body = document.body;
+const slider = document.querySelector('.range-slider');
+const padHeight = window.innerHeight;
+const padWidth = window.innerWidth - 75;
 
 let isMouseDown = false;
-
-const slider = document.querySelector('.range-slider');
+let counter = 1;
 
 // TODO: Must create a new container each time the slider changes
 function addSliderEventListener() {
   slider.onmouseup = function() {
+    console.log(slider.value);
+    createGrid(slider.value);
+    
+    const firstContainer = document.querySelector('.container:first-of-type');
+    const lastContainer = document.querySelector('.container:last-of-type');
 
+    lastContainer.style.position = 'absolute';
+    lastContainer.style.left = '0';
+    lastContainer.style.right = '0';
+    lastContainer.style.top = '0';
+    lastContainer.style.bottom = '0';
+
+
+    lastContainer.style.height = padHeight;
+    console.log(padHeight)
+    console.log(lastContainer.offsetHeight)
+    lastContainer.style.width = padWidth;
+    console.log(padWidth)
+    console.log(lastContainer.offsetWidth)
   }
 }
 
@@ -28,19 +48,20 @@ function clearGrid() {
 function createGrid(columns) {
   const container = document.createElement('div');
   container.className = 'container';
+
   body.appendChild(container);
 
   for (let i = 0; i < columns; i++) {
     const column = createColumn(columns)
     container.appendChild(column);
 
-    column.offsetHeight = container.offsetHeight / columns;
-    column.offsetWidth = container.offsetWidth / columns;
+    column.offsetHeight = padHeight / columns;
+    column.offsetWidth = padWidth / columns;
   }
 }
 
 function determineNumBoxesInColumn(columns) {
-  const heightWidthRatio = container.offsetHeight / container.offsetWidth;
+  const heightWidthRatio = padHeight / padWidth;
   const numBoxesRaw = columns * heightWidthRatio;
   const numBoxesRounded = Math.floor(numBoxesRaw);
 
@@ -52,8 +73,8 @@ function createColumn(columns) {
   column.className = 'column';
 
   // TODO: container is not accessable from this scope, need to fix
-  column.style.height = container.offsetHeight;
-  column.style.width = container.offsetWidth / columns;
+  column.style.height = padHeight;
+  column.style.width = padWidth / columns;
 
   const boxes = determineNumBoxesInColumn(columns);
 
@@ -68,22 +89,23 @@ function createColumn(columns) {
     box.obj.addEventListener('mouseover', () => {
       if (isMouseDown && !box.isFilled) {
         box.obj.style.backgroundColor = 'black';
+        box.obj.style.opacity = '100%';
       }
     });
 
     column.appendChild(box.obj);
 
-    box.obj.style.width = container.offsetWidth / (columns ** 2);
-    box.obj.style.height = container.offsetHeight / (columns ** 2);
+    box.obj.style.height = padHeight / (columns ** 2);
+    box.obj.style.width = padWidth / (columns ** 2);
   }
 
   return column;
 }
 
 function main() {
-  addSliderEventListener();
-  createGrid(50)
+  createGrid(slider.value);
   checkMouseDown();
+  addSliderEventListener();
 }
 
 main();
