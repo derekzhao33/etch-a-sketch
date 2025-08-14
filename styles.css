@@ -17,7 +17,6 @@ body {
   flex: 1;
   flex-wrap: wrap;
   border-width: 1px;
-  background-color: white;
 }
 
 .column {
