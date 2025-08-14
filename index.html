@@ -9,15 +9,13 @@
 
   <body>
     <div class="bar">
-      <div class="pen-size-container">  
-        <div class="pen-size-icon">
-          <img class="icon" src="images\brush-thickness-icon.svg" alt="Pen size" width="35px" height="35px">
-        </div>
-
-        <div class="slider-container">
+      <div class="slider-container">
           <input class="range-slider" type="range" value="100" min="50" max="150" step="5"> 
-        </div>
+        <span class="tooltip" id="brush-tooltip">Brush thickness</span>
       </div>
+
+      <button class="eraser"></button>
+      <button class="clear"></button>
     </div>
     <script src="main.js"></script>
   </body>

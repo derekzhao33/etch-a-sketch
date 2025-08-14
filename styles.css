@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
 html {
   margin: 0;
   height: 100%;
@@ -41,19 +43,7 @@ body {
   background-color: #E4E4E7;
   position: relative;
   z-index: 10;
-}
-
-.pen-size-container {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 7px;
-  width: 55%;
-  height: 50%;
-  background-color: #babac4;
-  padding: 12px 0 12px 0;
-}
+}   
 
 .pen-size-icon {
   display: flex;
@@ -65,21 +55,27 @@ body {
 }
 
 .slider-container {
+  margin: 15px 0 15px 0;
   display: flex;
   justify-content: center;
-  height: 100%;
+  height: 50%;
   width: 30%;
 }
 
 .range-slider {
+  opacity: 0.7;
   -webkit-appearance: none;
   appearance: none;
-  height: 90%;
+  height: 100%;
   width: 55%;
   writing-mode: vertical-lr;
   direction: ltr;
-  background: #D9D9D9;
+  background: #babac4;
   border-radius: 20px;
+}
+
+.range-slider:hover {
+  opacity: 1;
 }
 
 .range-slider::-webkit-slider-thumb {
@@ -91,6 +87,21 @@ body {
   opacity: 100%;
   border-radius: 50%;
 }
+
+.tooltip {
+  visibility: hidden;
+  position: absolute;
+  top: 25%;
+  left: 77%;
+  font-family: 'Roboto';
+  font-size: 12px;
+  white-space: nowrap;
+  background-color: #EDE9EB;
+  padding: 3px;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px #babac4;
+}
+
 
 
 

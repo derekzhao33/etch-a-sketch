@@ -1,14 +1,41 @@
 const body = document.body;
 const slider = document.querySelector('.range-slider');
+const brushTooltip = document.getElementById('brush-tooltip');
 const padHeight = window.innerHeight;
 const padWidth = window.innerWidth - 75;
 
 let isMouseDown = false;
-let counter = 1;
 
 // TODO: Must create a new container each time the slider changes
-function addSliderEventListener() {
-  slider.onmouseup = function() {
+function addEventListeners() {
+  changeBrushThickness();
+  showTooltips();
+}
+
+function showTooltips() {
+  console.log('showtooltip');
+
+  slider.addEventListener('mouseover', () => {
+    if (!isMouseDown) {
+      setTimeout(() => {
+        brushTooltip.style.visibility = 'visible';
+      }, 1000)
+    }
+  })
+
+  slider.addEventListener('mousedown', () => {
+    brushTooltip.style.visibility = 'hidden';
+    clearTimeout();
+  })
+
+  slider.addEventListener('mouseout', () => {
+    brushTooltip.style.visibility = 'hidden';
+    clearTimeout();
+  })
+}
+
+function changeBrushThickness() {
+  slider.addEventListener('mouseup', () => {
     console.log(slider.value);
     createGrid(slider.value);
     
@@ -21,15 +48,11 @@ function addSliderEventListener() {
     lastContainer.style.top = '0';
     lastContainer.style.bottom = '0';
 
-
     lastContainer.style.height = padHeight;
-    console.log(padHeight)
-    console.log(lastContainer.offsetHeight)
     lastContainer.style.width = padWidth;
-    console.log(padWidth)
-    console.log(lastContainer.offsetWidth)
-  }
+  })
 }
+
 
 function checkMouseDown() {
   document.addEventListener('mousedown', () => {
@@ -105,7 +128,7 @@ function createColumn(columns) {
 function main() {
   createGrid(slider.value);
   checkMouseDown();
-  addSliderEventListener();
+  addEventListeners();
 }
 
 main();
