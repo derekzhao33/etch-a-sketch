@@ -77,7 +77,7 @@ body {
   height: 90%;
   width: 55%;
   writing-mode: vertical-lr;
-  direction: rtl;
+  direction: ltr;
   background: #D9D9D9;
   border-radius: 20px;
 }
