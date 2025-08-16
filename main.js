@@ -9,29 +9,27 @@ let isMouseDown = false;
 // TODO: Must create a new container each time the slider changes
 function addEventListeners() {
   changeBrushThickness();
-  showTooltips();
+  handleSliderToolTip();
 }
 
-function showTooltips() {
-  console.log('showtooltip');
+function handleSliderToolTip() {
+  let tooltipTimeout;
 
   slider.addEventListener('mouseover', () => {
-    if (!isMouseDown) {
-      setTimeout(() => {
-        brushTooltip.style.visibility = 'visible';
-      }, 1000)
-    }
-  })
+    tooltipTimeout = setTimeout(() => {
+      brushTooltip.style.visibility = 'visible';
+    }, 1000);
+  });
 
-  slider.addEventListener('mousedown', () => {
+  slider.addEventListener('input', () => {
     brushTooltip.style.visibility = 'hidden';
-    clearTimeout();
-  })
+    clearTimeout(tooltipTimeout);
+  });
 
-  slider.addEventListener('mouseout', () => {
+  slider.addEventListener('mouseleave', () => {
     brushTooltip.style.visibility = 'hidden';
-    clearTimeout();
-  })
+    clearTimeout(tooltipTimeout);
+  });
 }
 
 function changeBrushThickness() {
@@ -57,10 +55,12 @@ function changeBrushThickness() {
 function checkMouseDown() {
   document.addEventListener('mousedown', () => {
       isMouseDown = true;
+      console.log(isMouseDown);
   })
 
   document.addEventListener('mouseup', () => {
       isMouseDown = false;
+      console.log(isMouseDown);
   })
 }
 
