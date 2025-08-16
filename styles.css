@@ -55,7 +55,7 @@ body {
 }
 
 .slider-container {
-  margin: 15px 0 15px 0;
+  margin: 15px 0 0 0;
   display: flex;
   justify-content: center;
   height: 50%;
@@ -100,6 +100,25 @@ body {
   padding: 3px;
   border-radius: 5px;
   box-shadow: 0 1px 2px #babac4;
+}
+
+.icon, button {
+  padding: 0;
+  margin: 0;
+  width: 75%;
+  aspect-ratio: 1 / 1;
+  border-style: none;
+  background-color: #E4E4E7;
+  opacity: 0.8;
+}
+
+button:hover {
+  opacity: 1;
+}
+
+.clear {
+  margin-top: auto;
+  margin-bottom: 15px;
 }
 
 
