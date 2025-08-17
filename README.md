@@ -1,2 +1,2 @@
-# etch-a-sketch
-A simple etch-a-sketch/sketchpad 
+# Sketchpad
+A simple sketchpad
