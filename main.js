@@ -9,27 +9,31 @@ let isMouseDown = false;
 // TODO: Must create a new container each time the slider changes
 function addEventListeners() {
   changeBrushThickness();
-  handleSliderToolTip();
+  handleToolTip(slider, brushTooltip);
 }
 
-function handleSliderToolTip() {
+function handleToolTip(element, tooltip) {
   let tooltipTimeout;
 
-  slider.addEventListener('mouseover', () => {
+  element.addEventListener('mouseover', () => {
     tooltipTimeout = setTimeout(() => {
-      brushTooltip.style.visibility = 'visible';
+      tooltip.style.visibility = 'visible';
     }, 1000);
   });
 
-  slider.addEventListener('input', () => {
-    brushTooltip.style.visibility = 'hidden';
+  element.addEventListener('input', () => {
+    tooltip.style.visibility = 'hidden';
     clearTimeout(tooltipTimeout);
   });
 
-  slider.addEventListener('mouseleave', () => {
-    brushTooltip.style.visibility = 'hidden';
+  element.addEventListener('mouseleave', () => {
+    tooltip.style.visibility = 'hidden';
     clearTimeout(tooltipTimeout);
   });
+}
+
+function handleButtonHover(button) {
+
 }
 
 function changeBrushThickness() {
