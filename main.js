@@ -1,3 +1,9 @@
+// TODO: URGENT, clicking clear will reset brush size to original
+// TODO: URGENT, tooltips are not disappearing/appearing properly
+// TODO: make eraser a toggle instead of click
+// TODO: refactor event listeners to implement event delegation
+// TODO: add colors (color picker or set amount of colors)
+
 const body = document.body;
 const slider = document.querySelector('.range-slider');
 const brushTooltip = document.getElementById('brush-tooltip');
@@ -19,7 +25,6 @@ let brushColor = 'black';
 let isMouseDown = false;
 let gridList = new Array();
 
-// TODO: Must create a new container each time the slider changes
 function addEventListeners() {
   changeBrushThickness();
   handleTooltip(slider, brushTooltip, 'input');
