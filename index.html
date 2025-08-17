@@ -10,16 +10,23 @@
   <body>
     <div class="bar">
       <div class="slider-container">
-          <input class="range-slider" type="range" value="100" min="35" max="165" step="5"> 
+        <input class="range-slider" type="range" value="100" min="35" max="165" step="5"> 
         <span class="tooltip" id="brush-tooltip">Brush thickness</span>
       </div>
 
-      <button class="eraser">
-        <img class="icon" src="images\line-eraser-icon.svg" alt="Erase">
-      </button>
-      <button class="clear">
-        <img class="icon" src="images\trash-can-icon.svg" alt="Clear">
-      </button>
+      <div class="button-container">
+        <button class="eraser">
+          <img class="icon" id="eraser-icon" src="images\line-eraser-icon.svg" alt="Erase">
+        </button>        
+        <span class="tooltip" id="erase-tooltip">Erase</span>
+      </div>
+
+      <div class="button-container" id="clear-button">
+        <button class="clear">
+          <img class="icon" id="clear-icon" src="images\trash-can-icon.svg" alt="Clear">
+        </button>
+        <span class="tooltip" id="clear-tooltip">Clear canvas</span>
+      </div>
     </div>
     <script src="main.js"></script>
   </body>

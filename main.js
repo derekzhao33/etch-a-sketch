@@ -1,15 +1,36 @@
 const body = document.body;
 const slider = document.querySelector('.range-slider');
 const brushTooltip = document.getElementById('brush-tooltip');
+const eraserButton = document.querySelector('.eraser');
+const eraserIcon = document.getElementById('eraser-icon')
+const clearButton = document.querySelector('.clear');
+const clearIcon = document.getElementById('clear-icon');
+
 const padHeight = window.innerHeight;
 const padWidth = window.innerWidth - 75;
 
+const buttonHoverColor = '#D1D1D6';
+const buttonClickColor = '#D7D7DC'
+const sliderThumbInputDimension = '20px';
+
+let brushColor = 'black';
 let isMouseDown = false;
+let gridList = new Array();
 
 // TODO: Must create a new container each time the slider changes
 function addEventListeners() {
   changeBrushThickness();
   handleToolTip(slider, brushTooltip);
+  handleButtonHover(eraserButton, eraserIcon);
+  handleButtonHover(clearButton, clearIcon);
+  handleButtonPress(clearButton, clearGrid);
+  handleButtonPress(eraserButton, () => {brushColor = 'white'});
+}
+
+function handleButtonPress(button, func) {
+  button.addEventListener('click', () => {
+    func();
+  })
 }
 
 function handleToolTip(element, tooltip) {
@@ -32,8 +53,31 @@ function handleToolTip(element, tooltip) {
   });
 }
 
-function handleButtonHover(button) {
+function handleButtonHover(button, icon) {
+  const originalColor = button.style.backgroundColor;
+  let prevColor = '';
 
+  button.addEventListener('mouseover', () => {
+    button.style.backgroundColor = buttonHoverColor;
+    icon.style.backgroundColor = buttonHoverColor;
+    prevColor = button.style.backgroundColor;
+  })
+
+  button.addEventListener('mouseleave', () => {
+    button.style.backgroundColor = originalColor;
+    icon.style.backgroundColor = originalColor;
+    prevColor = button.style.backgroundColor;
+  })
+
+  button.addEventListener('mousedown', () => {
+    button.style.backgroundColor = buttonClickColor;
+    icon.style.backgroundColor = buttonClickColor;
+  })
+
+  button.addEventListener('mouseup', () => {
+    button.style.backgroundColor = prevColor;
+    icon.style.backgroundColor = prevColor;
+  })
 }
 
 function changeBrushThickness() {
@@ -69,7 +113,21 @@ function checkMouseDown() {
 }
 
 function clearGrid() {
+  let index = 0;
 
+  if (gridList.length > 1) {
+    let toRemove = gridList.splice(1);
+
+    for (const grid of toRemove) {
+      grid.remove();
+    }
+  } 
+
+  let boxes = Array.from(document.querySelectorAll('.box'));
+
+  for (const box of boxes) {
+    box.style.backgroundColor = 'white';
+  }
 }
 
 function createGrid(columns) {
@@ -85,6 +143,8 @@ function createGrid(columns) {
     column.offsetHeight = padHeight / columns;
     column.offsetWidth = padWidth / columns;
   }
+
+  gridList.push(container);
 }
 
 function determineNumBoxesInColumn(columns) {
@@ -115,8 +175,8 @@ function createColumn(columns) {
 
     box.obj.addEventListener('mouseover', () => {
       if (isMouseDown && !box.isFilled) {
-        box.obj.style.backgroundColor = 'black';
-        box.obj.style.opacity = '100%';
+        box.obj.style.backgroundColor = brushColor;
+        box.obj.style.opacity = '1';
       }
     });
 
