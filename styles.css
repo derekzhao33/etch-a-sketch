@@ -95,7 +95,7 @@ body {
 }
 
 .tooltip {
-  visibility: visible;
+  visibility: hidden;
   position: absolute;
   font-family: 'Roboto';
   font-size: 12px;
@@ -134,10 +134,6 @@ button {
 #clear-button {
   margin-top: auto;
   margin-bottom: 10px;
-}
-
-#erase-tooltip {
-  top: 54%;
 }
 
 

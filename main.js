@@ -3,8 +3,10 @@ const slider = document.querySelector('.range-slider');
 const brushTooltip = document.getElementById('brush-tooltip');
 const eraserButton = document.querySelector('.eraser');
 const eraserIcon = document.getElementById('eraser-icon')
+const eraserTooltip = document.getElementById('eraser-tooltip');
 const clearButton = document.querySelector('.clear');
 const clearIcon = document.getElementById('clear-icon');
+const clearTooltip = document.getElementById('clear-tooltip')
 
 const padHeight = window.innerHeight;
 const padWidth = window.innerWidth - 75;
@@ -20,7 +22,9 @@ let gridList = new Array();
 // TODO: Must create a new container each time the slider changes
 function addEventListeners() {
   changeBrushThickness();
-  handleToolTip(slider, brushTooltip);
+  handleTooltip(slider, brushTooltip, 'input');
+  handleTooltip(eraserButton, eraserTooltip, 'mousedown');
+  handleTooltip(clearButton, clearTooltip, 'mousedown');
   handleButtonHover(eraserButton, eraserIcon);
   handleButtonHover(clearButton, clearIcon);
   handleButtonPress(clearButton, clearGrid);
@@ -33,7 +37,7 @@ function handleButtonPress(button, func) {
   })
 }
 
-function handleToolTip(element, tooltip) {
+function handleTooltip(element, tooltip, inputType) {
   let tooltipTimeout;
 
   element.addEventListener('mouseover', () => {
@@ -42,14 +46,14 @@ function handleToolTip(element, tooltip) {
     }, 1000);
   });
 
-  element.addEventListener('input', () => {
-    tooltip.style.visibility = 'hidden';
+  element.addEventListener(inputType, () => {
     clearTimeout(tooltipTimeout);
+    tooltip.style.visibility = 'hidden';
   });
 
   element.addEventListener('mouseleave', () => {
-    tooltip.style.visibility = 'hidden';
     clearTimeout(tooltipTimeout);
+    tooltip.style.visibility = 'hidden';
   });
 }
 
@@ -57,7 +61,7 @@ function handleButtonHover(button, icon) {
   const originalColor = button.style.backgroundColor;
   let prevColor = '';
 
-  button.addEventListener('mouseover', () => {
+  button.addEventListener('mouseenter', () => {
     button.style.backgroundColor = buttonHoverColor;
     icon.style.backgroundColor = buttonHoverColor;
     prevColor = button.style.backgroundColor;
@@ -82,7 +86,6 @@ function handleButtonHover(button, icon) {
 
 function changeBrushThickness() {
   slider.addEventListener('mouseup', () => {
-    console.log(slider.value);
     createGrid(slider.value);
     
     const firstContainer = document.querySelector('.container:first-of-type');
@@ -103,12 +106,10 @@ function changeBrushThickness() {
 function checkMouseDown() {
   document.addEventListener('mousedown', () => {
       isMouseDown = true;
-      console.log(isMouseDown);
   })
 
   document.addEventListener('mouseup', () => {
       isMouseDown = false;
-      console.log(isMouseDown);
   })
 }
 
@@ -158,8 +159,7 @@ function determineNumBoxesInColumn(columns) {
 function createColumn(columns) {
   const column = document.createElement('div');
   column.className = 'column';
-
-  // TODO: container is not accessable from this scope, need to fix
+  
   column.style.height = padHeight;
   column.style.width = padWidth / columns;
 
