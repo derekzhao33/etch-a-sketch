@@ -1,10 +1,10 @@
-// TODO: URGENT, clicking clear will reset brush size to original
-// TODO: URGENT, tooltips are not disappearing/appearing properly
 // TODO: make eraser a toggle instead of click
 // TODO: refactor event listeners to implement event delegation
 // TODO: add colors (color picker or set amount of colors)
+// TODO: refactor for loops to have filter, map, foreach, etc.
 
 const body = document.body;
+const bar = document.querySelector('.bar');
 const slider = document.querySelector('.range-slider');
 const brushTooltip = document.getElementById('brush-tooltip');
 const eraserButton = document.querySelector('.eraser');
@@ -21,7 +21,8 @@ const buttonHoverColor = '#D1D1D6';
 const buttonClickColor = '#D7D7DC'
 const sliderThumbInputDimension = '20px';
 
-let brushColor = 'black';
+let currBrushColor = 'black';
+let currGridDimension = slider.value;
 let isMouseDown = false;
 let gridList = new Array();
 
@@ -32,8 +33,17 @@ function addEventListeners() {
   handleTooltip(clearButton, clearTooltip, 'mousedown');
   handleButtonHover(eraserButton, eraserIcon);
   handleButtonHover(clearButton, clearIcon);
-  handleButtonPress(clearButton, clearGrid);
-  handleButtonPress(eraserButton, () => {brushColor = 'white'});
+  addGlobalEventListener('click', bar, '#clear-button', clearGrid)
+  handleButtonPress(eraserButton, () => {currBrushColor = 'white'});
+}
+
+function addGlobalEventListener(type, container, selector, func) {
+  container.addEventListener(type, (e) => {
+    if (e.target.matches(selector)) {
+      console.log('works')
+      func();
+    }
+  })
 }
 
 function handleButtonPress(button, func) {
@@ -56,7 +66,7 @@ function handleTooltip(element, tooltip, inputType) {
     tooltip.style.visibility = 'hidden';
   });
 
-  element.addEventListener('mouseleave', () => {
+  element.addEventListener('mouseout', () => {
     clearTimeout(tooltipTimeout);
     tooltip.style.visibility = 'hidden';
   });
@@ -91,7 +101,8 @@ function handleButtonHover(button, icon) {
 
 function changeBrushThickness() {
   slider.addEventListener('mouseup', () => {
-    createGrid(slider.value);
+    currGridDimension = slider.value;
+    createGrid(currGridDimension);
     
     const firstContainer = document.querySelector('.container:first-of-type');
     const lastContainer = document.querySelector('.container:last-of-type');
@@ -119,21 +130,13 @@ function checkMouseDown() {
 }
 
 function clearGrid() {
-  let index = 0;
+  console.log(currGridDimension);
 
-  if (gridList.length > 1) {
-    let toRemove = gridList.splice(1);
-
-    for (const grid of toRemove) {
-      grid.remove();
-    }
+  for (const grid of gridList) {
+    grid.remove();
   } 
 
-  let boxes = Array.from(document.querySelectorAll('.box'));
-
-  for (const box of boxes) {
-    box.style.backgroundColor = 'white';
-  }
+  createGrid(currGridDimension);
 }
 
 function createGrid(columns) {
@@ -180,7 +183,7 @@ function createColumn(columns) {
 
     box.obj.addEventListener('mouseover', () => {
       if (isMouseDown && !box.isFilled) {
-        box.obj.style.backgroundColor = brushColor;
+        box.obj.style.backgroundColor = currBrushColor;
         box.obj.style.opacity = '1';
       }
     });
@@ -195,7 +198,7 @@ function createColumn(columns) {
 }
 
 function main() {
-  createGrid(slider.value);
+  createGrid(currGridDimension);
   checkMouseDown();
   addEventListeners();
 }
