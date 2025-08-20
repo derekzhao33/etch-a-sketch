@@ -2,6 +2,7 @@
 // TODO: refactor event listeners to implement event delegation
 // TODO: add colors (color picker or set amount of colors)
 // TODO: refactor for loops to have filter, map, foreach, etc.
+// TODO: add the 'filled' class to toggle when dragging mouse
 
 const body = document.body;
 const bar = document.querySelector('.bar');
@@ -28,32 +29,26 @@ let gridList = new Array();
 
 function addEventListeners() {
   changeBrushThickness();
-  handleTooltip(slider, brushTooltip, 'input');
-  handleTooltip(eraserButton, eraserTooltip, 'mousedown');
-  handleTooltip(clearButton, clearTooltip, 'mousedown');
-  handleButtonHover(eraserButton, eraserIcon);
-  handleButtonHover(clearButton, clearIcon);
-  addGlobalEventListener('click', bar, '#clear-button', clearGrid)
-  handleButtonPress(eraserButton, () => {currBrushColor = 'white'});
+  handleTooltip(slider, '#brush-tooltip', 'input');
+  handleTooltip(eraserButton, '#eraser-tooltip', 'mousedown');
+  handleTooltip(clearButton, '#clear-tooltip', 'mousedown');
+  handleButtonHover('#eraser-button', '#eraser-icon');
+  handleButtonHover('#clear-button', '#clear-icon');
+  addGlobalEventListener('click', bar, '#clear-button', clearGrid);
+  addGlobalEventListener('click', bar, '#eraser-button', () => {currBrushColor = 'white'})
 }
 
 function addGlobalEventListener(type, container, selector, func) {
   container.addEventListener(type, (e) => {
-    if (e.target.matches(selector)) {
-      console.log('works')
+    if (e.target.closest(selector)) {
       func();
     }
   })
 }
 
-function handleButtonPress(button, func) {
-  button.addEventListener('click', () => {
-    func();
-  })
-}
-
-function handleTooltip(element, tooltip, inputType) {
+function handleTooltip(element, tooltipSelector, inputType) {
   let tooltipTimeout;
+  const tooltip = document.querySelector(tooltipSelector);
 
   element.addEventListener('mouseover', () => {
     tooltipTimeout = setTimeout(() => {
@@ -61,10 +56,10 @@ function handleTooltip(element, tooltip, inputType) {
     }, 1000);
   });
 
-  element.addEventListener(inputType, () => {
+  addGlobalEventListener(inputType, bar, tooltipSelector, () => {
     clearTimeout(tooltipTimeout);
     tooltip.style.visibility = 'hidden';
-  });
+  })
 
   element.addEventListener('mouseout', () => {
     clearTimeout(tooltipTimeout);
@@ -72,7 +67,10 @@ function handleTooltip(element, tooltip, inputType) {
   });
 }
 
-function handleButtonHover(button, icon) {
+function handleButtonHover(buttonSelector, iconSelector) {
+  const button = document.querySelector(buttonSelector);
+  const icon = document.querySelector(iconSelector);
+
   const originalColor = button.style.backgroundColor;
   let prevColor = '';
 
@@ -88,15 +86,15 @@ function handleButtonHover(button, icon) {
     prevColor = button.style.backgroundColor;
   })
 
-  button.addEventListener('mousedown', () => {
-    button.style.backgroundColor = buttonClickColor;
-    icon.style.backgroundColor = buttonClickColor;
-  })
+  // button.addEventListener('mousedown', () => {
+  //   button.style.backgroundColor = buttonClickColor;
+  //   icon.style.backgroundColor = buttonClickColor;
+  // })
 
-  button.addEventListener('mouseup', () => {
-    button.style.backgroundColor = prevColor;
-    icon.style.backgroundColor = prevColor;
-  })
+  // button.addEventListener('mouseup', () => {
+  //   button.style.backgroundColor = prevColor;
+  //   icon.style.backgroundColor = prevColor;
+  // })
 }
 
 function changeBrushThickness() {
