@@ -20,6 +20,7 @@ const buttonClickColor = '#D7D7DC'
 const sliderThumbInputDimension = '20px';
 
 let isEraserOn = false;
+let prevColor = null;
 let currBrushColor = 'black';
 let currGridDimension = slider.value;
 let isMouseDown = false;
@@ -30,20 +31,28 @@ function addEventListeners() {
   handleTooltip(slider, brushTooltip, 'input');
   handleTooltip(eraserButton, eraserTooltip, 'mousedown');
   handleTooltip(clearButton, clearTooltip, 'mousedown');
-  toggleButton(eraserButton, eraserIcon);
+  eraserButton.addEventListener('click', () => {
+    handleButtonToggle(eraserButton, eraserIcon);
+    handleEraser();
+  })
   clearButton.addEventListener('click', () => {
     clearGrid();
   })
 }
 
-function toggleButton(button, icon, func) {
-  button.addEventListener('click', () => {
-    button.classList.toggle('toggled');
-    icon.classList.toggle('toggled');
-  })
+function handleButtonToggle(button, icon) {
+  button.classList.toggle('toggled');
+  icon.classList.toggle('toggled');
+}
 
+function handleEraser() {
   if (!isEraserOn) {
-
+    prevColor = currBrushColor;
+    currBrushColor = 'white';
+    isEraserOn = true;
+  } else {
+    currBrushColor = prevColor;
+    isEraserOn = false;
   }
 }
 
@@ -65,10 +74,6 @@ function handleTooltip(element, tooltip, inputType) {
     clearTimeout(tooltipTimeout);
     tooltip.style.visibility = 'hidden';
   });
-}
-
-function handleButtonToggle(button, icon) {
-
 }
 
 function changeBrushThickness() {
@@ -147,8 +152,9 @@ function createColumn(columns) {
     box.classList.add('box');
 
     box.addEventListener('mouseover', () => {
-      if (isMouseDown && !box.classList.contains('filled')) {
-        box.classList.toggle('filled');
+      if (isMouseDown) {
+        box.style.backgroundColor = currBrushColor;
+        box.style.opacity = '1';
       }
     });
 
