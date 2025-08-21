@@ -1,5 +1,5 @@
-// TODO: make eraser a toggle instead of click
 // TODO: add colors (color picker or set amount of colors)
+// TODO: figure out how to deal with window resizing
 
 const body = document.body;
 const bar = document.querySelector('.bar');
@@ -28,13 +28,16 @@ let gridList = new Array();
 
 function addEventListeners() {
   changeBrushThickness();
+
   handleTooltip(slider, brushTooltip, 'input');
   handleTooltip(eraserButton, eraserTooltip, 'mousedown');
   handleTooltip(clearButton, clearTooltip, 'mousedown');
+
   eraserButton.addEventListener('click', () => {
     handleButtonToggle(eraserButton, eraserIcon);
     handleEraser();
   })
+
   clearButton.addEventListener('click', () => {
     clearGrid();
   })
@@ -97,11 +100,11 @@ function changeBrushThickness() {
 
 
 function checkMouseDown() {
-  document.addEventListener('mousedown', () => {
+  document.addEventListener('pointerdown', () => {
       isMouseDown = true;
   })
 
-  document.addEventListener('mouseup', () => {
+  document.addEventListener('pointerup', () => {
       isMouseDown = false;
   })
 }
@@ -115,18 +118,28 @@ function clearGrid() {
 function createGrid(columns) {
   const container = document.createElement('div');
   container.className = 'container';
-
   body.appendChild(container);
 
   for (let i = 0; i < columns; i++) {
-    const column = createColumn(columns)
+    const column = createColumn(columns);
     container.appendChild(column);
-
-    column.offsetHeight = padHeight / columns;
-    column.offsetWidth = padWidth / columns;
   }
 
   gridList.push(container);
+
+  container.addEventListener('mouseover', (e) => {
+    if (isMouseDown && e.target.classList.contains('box')) {
+      e.target.style.backgroundColor = currBrushColor;
+      e.target.style.opacity = '1';
+    }
+  });
+
+  container.addEventListener('click', (e) => {
+    if (e.target.classList.contains('box')) {
+      e.target.style.backgroundColor = currBrushColor;
+      e.target.style.opacity = '1';
+    }
+  });
 }
 
 function determineNumBoxesInColumn(columns) {
@@ -150,14 +163,6 @@ function createColumn(columns) {
     const box = document.createElement('div')
 
     box.classList.add('box');
-
-    box.addEventListener('mouseover', () => {
-      if (isMouseDown) {
-        box.style.backgroundColor = currBrushColor;
-        box.style.opacity = '1';
-      }
-    });
-
     column.appendChild(box);
 
     box.style.height = padHeight / (columns ** 2);
