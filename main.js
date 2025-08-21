@@ -1,9 +1,5 @@
 // TODO: make eraser a toggle instead of click
-// TODO: refactor event listeners to implement event delegation
 // TODO: add colors (color picker or set amount of colors)
-// TODO: refactor for loops to have filter, map, foreach, etc.
-// TODO: add the 'filled' class to toggle when dragging mouse
-// TODO: add the toggled class to toggle when clicking eraser button
 
 const body = document.body;
 const bar = document.querySelector('.bar');
@@ -23,6 +19,7 @@ const buttonHoverColor = '#D1D1D6';
 const buttonClickColor = '#D7D7DC'
 const sliderThumbInputDimension = '20px';
 
+let isEraserOn = false;
 let currBrushColor = 'black';
 let currGridDimension = slider.value;
 let isMouseDown = false;
@@ -33,16 +30,21 @@ function addEventListeners() {
   handleTooltip(slider, brushTooltip, 'input');
   handleTooltip(eraserButton, eraserTooltip, 'mousedown');
   handleTooltip(clearButton, clearTooltip, 'mousedown');
-  addGlobalEventListener('click', bar, '#clear-button', clearGrid);
-  addGlobalEventListener('click', bar, '#eraser-button', () => {currBrushColor = 'white'})
+  toggleButton(eraserButton, eraserIcon);
+  clearButton.addEventListener('click', () => {
+    clearGrid();
+  })
 }
 
-function addGlobalEventListener(type, container, selector, func) {
-  container.addEventListener(type, (e) => {
-    if (e.target.closest(selector)) {
-      func();
-    }
+function toggleButton(button, icon, func) {
+  button.addEventListener('click', () => {
+    button.classList.toggle('toggled');
+    icon.classList.toggle('toggled');
   })
+
+  if (!isEraserOn) {
+
+  }
 }
 
 function handleTooltip(element, tooltip, inputType) {
@@ -145,7 +147,7 @@ function createColumn(columns) {
     box.classList.add('box');
 
     box.addEventListener('mouseover', () => {
-      if (isMouseDown) {
+      if (isMouseDown && !box.classList.contains('filled')) {
         box.classList.toggle('filled');
       }
     });

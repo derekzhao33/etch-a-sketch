@@ -142,9 +142,13 @@ button:hover .icon {
   margin-bottom: 10px;
 }
 
-#clear-button:active:hover,
-#clear-button:active:hover #clear-icon {
+button:active:hover,
+button:active:hover .icon {
   background-color: #D7D7D7;
+}
+
+.toggled {
+  background-color: #D1D1D6;
 }
 
 .filled {
