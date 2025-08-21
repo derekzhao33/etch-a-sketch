@@ -28,6 +28,7 @@ body {
 }
 
 .box {
+  --filled-color: black;
   flex: 1 1 0;
   opacity: 0;
 }
@@ -131,10 +132,27 @@ button {
   width: 100%;
 }
 
+button:hover,
+button:hover .icon {
+  background-color: #D1D1D6;
+}
+
 #clear-button {
   margin-top: auto;
   margin-bottom: 10px;
 }
+
+#clear-button:active:hover,
+#clear-button:active:hover #clear-icon {
+  background-color: #D7D7D7;
+}
+
+.filled {
+  background-color: var(--filled-color);
+  opacity: 1;
+}
+
+
 
 
 

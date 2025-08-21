@@ -3,17 +3,18 @@
 // TODO: add colors (color picker or set amount of colors)
 // TODO: refactor for loops to have filter, map, foreach, etc.
 // TODO: add the 'filled' class to toggle when dragging mouse
+// TODO: add the toggled class to toggle when clicking eraser button
 
 const body = document.body;
 const bar = document.querySelector('.bar');
 const slider = document.querySelector('.range-slider');
 const brushTooltip = document.getElementById('brush-tooltip');
-const eraserButton = document.querySelector('.eraser');
+const eraserButton = document.getElementById('eraser-button')
 const eraserIcon = document.getElementById('eraser-icon')
 const eraserTooltip = document.getElementById('eraser-tooltip');
-const clearButton = document.querySelector('.clear');
+const clearButton = document.getElementById('clear-button');
 const clearIcon = document.getElementById('clear-icon');
-const clearTooltip = document.getElementById('clear-tooltip')
+const clearTooltip = document.getElementById('clear-tooltip') 
 
 const padHeight = window.innerHeight;
 const padWidth = window.innerWidth - 75;
@@ -29,11 +30,9 @@ let gridList = new Array();
 
 function addEventListeners() {
   changeBrushThickness();
-  handleTooltip(slider, '#brush-tooltip', 'input');
-  handleTooltip(eraserButton, '#eraser-tooltip', 'mousedown');
-  handleTooltip(clearButton, '#clear-tooltip', 'mousedown');
-  handleButtonHover('#eraser-button', '#eraser-icon');
-  handleButtonHover('#clear-button', '#clear-icon');
+  handleTooltip(slider, brushTooltip, 'input');
+  handleTooltip(eraserButton, eraserTooltip, 'mousedown');
+  handleTooltip(clearButton, clearTooltip, 'mousedown');
   addGlobalEventListener('click', bar, '#clear-button', clearGrid);
   addGlobalEventListener('click', bar, '#eraser-button', () => {currBrushColor = 'white'})
 }
@@ -46,9 +45,8 @@ function addGlobalEventListener(type, container, selector, func) {
   })
 }
 
-function handleTooltip(element, tooltipSelector, inputType) {
+function handleTooltip(element, tooltip, inputType) {
   let tooltipTimeout;
-  const tooltip = document.querySelector(tooltipSelector);
 
   element.addEventListener('mouseover', () => {
     tooltipTimeout = setTimeout(() => {
@@ -56,7 +54,7 @@ function handleTooltip(element, tooltipSelector, inputType) {
     }, 1000);
   });
 
-  addGlobalEventListener(inputType, bar, tooltipSelector, () => {
+  element.addEventListener(inputType, () => {
     clearTimeout(tooltipTimeout);
     tooltip.style.visibility = 'hidden';
   })
@@ -67,34 +65,8 @@ function handleTooltip(element, tooltipSelector, inputType) {
   });
 }
 
-function handleButtonHover(buttonSelector, iconSelector) {
-  const button = document.querySelector(buttonSelector);
-  const icon = document.querySelector(iconSelector);
+function handleButtonToggle(button, icon) {
 
-  const originalColor = button.style.backgroundColor;
-  let prevColor = '';
-
-  button.addEventListener('mouseenter', () => {
-    button.style.backgroundColor = buttonHoverColor;
-    icon.style.backgroundColor = buttonHoverColor;
-    prevColor = button.style.backgroundColor;
-  })
-
-  button.addEventListener('mouseleave', () => {
-    button.style.backgroundColor = originalColor;
-    icon.style.backgroundColor = originalColor;
-    prevColor = button.style.backgroundColor;
-  })
-
-  // button.addEventListener('mousedown', () => {
-  //   button.style.backgroundColor = buttonClickColor;
-  //   icon.style.backgroundColor = buttonClickColor;
-  // })
-
-  // button.addEventListener('mouseup', () => {
-  //   button.style.backgroundColor = prevColor;
-  //   icon.style.backgroundColor = prevColor;
-  // })
 }
 
 function changeBrushThickness() {
@@ -128,11 +100,7 @@ function checkMouseDown() {
 }
 
 function clearGrid() {
-  console.log(currGridDimension);
-
-  for (const grid of gridList) {
-    grid.remove();
-  } 
+  gridList.forEach((grid) => {grid.remove()});
 
   createGrid(currGridDimension);
 }
@@ -172,24 +140,20 @@ function createColumn(columns) {
   const boxes = determineNumBoxesInColumn(columns);
 
   for (let i = 0; i < boxes; i++) {
-    const box = {
-      obj: document.createElement('div'),
-      isFilled: false
-    };
+    const box = document.createElement('div')
 
-    box.obj.classList.add('box');
+    box.classList.add('box');
 
-    box.obj.addEventListener('mouseover', () => {
-      if (isMouseDown && !box.isFilled) {
-        box.obj.style.backgroundColor = currBrushColor;
-        box.obj.style.opacity = '1';
+    box.addEventListener('mouseover', () => {
+      if (isMouseDown) {
+        box.classList.toggle('filled');
       }
     });
 
-    column.appendChild(box.obj);
+    column.appendChild(box);
 
-    box.obj.style.height = padHeight / (columns ** 2);
-    box.obj.style.width = padWidth / (columns ** 2);
+    box.style.height = padHeight / (columns ** 2);
+    box.style.width = padWidth / (columns ** 2);
   }
 
   return column;
