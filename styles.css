@@ -112,7 +112,7 @@ body {
   left: 77%;
 }
 
-.icon, button {
+.icon, button, .color {
   padding: 0;
   aspect-ratio: 1 / 1;
   border-style: none;
@@ -124,22 +124,31 @@ body {
   width: 65%;
 }
 
-.button-container {
-  width: 80%;
-}
-
 button {
   width: 100%;
 }
 
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+}
+
 button:hover,
-button:hover .icon {
+button:hover .icon,
+.button-container:hover {
   background-color: #D1D1D6;
 }
 
-#clear-button {
-  margin-top: auto;
-  margin-bottom: 10px;
+#eraser-container {
+  margin: 0 0 10px 0;
+}
+
+#clear-container {
+  margin: 10px 0 5px 0;
 }
 
 button:active:hover,
@@ -151,10 +160,11 @@ button:active:hover .icon {
   background-color: #D1D1D6;
 }
 
-.filled {
-  background-color: var(--filled-color);
-  opacity: 1;
+.color {
+  width: 60%;
+  background-color: blue;
 }
+
 
 
 
