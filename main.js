@@ -1,5 +1,6 @@
 // TODO: add colors (color picker or set amount of colors)
 // TODO: figure out how to deal with window resizing
+// TODO: implement ability to save stuff
 
 const body = document.body;
 const bar = document.querySelector('.bar');
@@ -11,6 +12,11 @@ const eraserTooltip = document.getElementById('eraser-tooltip');
 const clearButton = document.getElementById('clear-button');
 const clearIcon = document.getElementById('clear-icon');
 const clearTooltip = document.getElementById('clear-tooltip') 
+const colorButton = document.getElementById('colors');
+const colorTooltip = document.getElementById('color-tooltip');
+
+const eyeDropper = new EyeDropper();
+const abortController = new AbortController();
 
 const padHeight = window.innerHeight;
 const padWidth = window.innerWidth - 75;
@@ -32,6 +38,7 @@ function addEventListeners() {
   handleTooltip(slider, brushTooltip, 'input');
   handleTooltip(eraserButton, eraserTooltip, 'mousedown');
   handleTooltip(clearButton, clearTooltip, 'mousedown');
+  handleTooltip(colorButton, colorTooltip, 'mousedown');
 
   eraserButton.addEventListener('click', () => {
     handleButtonToggle(eraserButton, eraserIcon);

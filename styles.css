@@ -97,7 +97,6 @@ body {
 
 .tooltip {
   visibility: hidden;
-  position: absolute;
   font-family: 'Roboto';
   font-size: 12px;
   white-space: nowrap;
@@ -105,11 +104,48 @@ body {
   padding: 3px;
   border-radius: 5px;
   box-shadow: 0 1px 2px #babac4;
+  top: 5%;
+  left: 100%;
+}
+
+
+.tooltip, .color-container {
+  position: absolute;
+}
+
+.color-container, .color-picker {
+  width: 250px;
+  bottom: -117px;
+  left: 130%;
+}
+
+.color-container {
+  --main-color: blue;
+  height: 300px;
+}
+
+.color-picker {
+  height: 150px;
+  background: 
+    linear-gradient(to top, black, transparent),  
+    linear-gradient(to right, white, var(--main-color));
+}
+
+.color-palette {
+
+}
+
+.gradient-slider {
+
+}
+
+.confirm {
+
 }
 
 #brush-tooltip {
   top: 25%;
-  left: 77%;
+  left: 75%;
 }
 
 .icon, button, .color {
@@ -126,12 +162,13 @@ body {
 
 button {
   width: 100%;
-}
-
-.button-container {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.button-container {
+  position: relative;
   width: 80%;
   aspect-ratio: 1 / 1;
   border-radius: 10px;
