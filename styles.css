@@ -78,6 +78,7 @@ body {
 
 .range-slider:hover {
   opacity: 1;
+  cursor: pointer;
 }
 
 .range-slider:active {
@@ -108,39 +109,8 @@ body {
   left: 100%;
 }
 
-
-.tooltip, .color-container {
+.tooltip {
   position: absolute;
-}
-
-.color-container, .color-picker {
-  width: 250px;
-  bottom: -117px;
-  left: 130%;
-}
-
-.color-container {
-  --main-color: blue;
-  height: 300px;
-}
-
-.color-picker {
-  height: 150px;
-  background: 
-    linear-gradient(to top, black, transparent),  
-    linear-gradient(to right, white, var(--main-color));
-}
-
-.color-palette {
-
-}
-
-.gradient-slider {
-
-}
-
-.confirm {
-
 }
 
 #brush-tooltip {
@@ -148,7 +118,7 @@ body {
   left: 75%;
 }
 
-.icon, button, .color {
+.icon, button {
   padding: 0;
   aspect-ratio: 1 / 1;
   border-style: none;
@@ -178,6 +148,7 @@ button:hover,
 button:hover .icon,
 .button-container:hover {
   background-color: #D1D1D6;
+  cursor: pointer;
 }
 
 #eraser-container {
@@ -197,10 +168,18 @@ button:active:hover .icon {
   background-color: #D1D1D6;
 }
 
-.color {
-  width: 60%;
-  background-color: blue;
+.color-picker {
+  width: 55%;
+  aspect-ratio: 1 / 1;
+  border-radius: 5px;
+  background-color: var(--color);
 }
+
+#colors {
+  --color: blue;
+}
+
+
 
 
 

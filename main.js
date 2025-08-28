@@ -1,7 +1,6 @@
 // TODO: add colors (color picker or set amount of colors)
 // TODO: figure out how to deal with window resizing
 // TODO: implement ability to save stuff
-
 const body = document.body;
 const bar = document.querySelector('.bar');
 const slider = document.querySelector('.range-slider');
@@ -12,20 +11,64 @@ const eraserTooltip = document.getElementById('eraser-tooltip');
 const clearButton = document.getElementById('clear-button');
 const clearIcon = document.getElementById('clear-icon');
 const clearTooltip = document.getElementById('clear-tooltip') 
-const colorButton = document.getElementById('colors');
+const colorButton = document.getElementById('color-button');
 const colorTooltip = document.getElementById('color-tooltip');
 
-const eyeDropper = new EyeDropper();
-const abortController = new AbortController();
+const pickr = Pickr.create({
+    el: '.color-picker',
+    theme: 'nano', // or 'monolith', or 'nano'
+
+    swatches: [
+        'rgba(244, 67, 54, 1)',
+        'rgba(233, 30, 99, 0.95)',
+        'rgba(156, 39, 176, 0.9)',
+        'rgba(103, 58, 183, 0.85)',
+        'rgba(63, 81, 181, 0.8)',
+        'rgba(33, 150, 243, 0.75)',
+        'rgba(3, 169, 244, 0.7)',
+        'rgba(0, 188, 212, 0.7)',
+        'rgba(0, 150, 136, 0.75)',
+        'rgba(76, 175, 80, 0.8)',
+        'rgba(139, 195, 74, 0.85)',
+        'rgba(205, 220, 57, 0.9)',
+        'rgba(255, 235, 59, 0.95)',
+        'rgba(255, 193, 7, 1)'
+    ],
+
+    position: 'right-end',
+
+    useAsButton: true,
+
+    components: {
+
+        // Main components
+        preview: true,
+        opacity: true,
+        hue: true,
+
+        // Input / output Options
+        interaction: {
+            hex: true,
+            rgba: false,
+            hsla: false,
+            hsva: false,
+            cmyk: false,
+            input: false,
+            clear: false,
+            save: true
+        }
+    }
+});
 
 const padHeight = window.innerHeight;
 const padWidth = window.innerWidth - 75;
 
-const buttonHoverColor = '#D1D1D6';
+const buttonHoverColor = '#33335aff';
 const buttonClickColor = '#D7D7DC'
 const sliderThumbInputDimension = '20px';
 
 let isEraserOn = false;
+let isPickrOn = false;
 let prevColor = null;
 let currBrushColor = 'black';
 let currGridDimension = slider.value;
@@ -40,6 +83,15 @@ function addEventListeners() {
   handleTooltip(clearButton, clearTooltip, 'mousedown');
   handleTooltip(colorButton, colorTooltip, 'mousedown');
 
+  configureButtons();
+}
+
+function configureButtons() {
+  colorButton.addEventListener('click', () => {
+    handleButtonToggle(colorButton);
+    handleColorPicker();
+  })
+
   eraserButton.addEventListener('click', () => {
     handleButtonToggle(eraserButton, eraserIcon);
     handleEraser();
@@ -50,9 +102,22 @@ function addEventListeners() {
   })
 }
 
-function handleButtonToggle(button, icon) {
+function handleButtonToggle(button, icon = null) {
   button.classList.toggle('toggled');
-  icon.classList.toggle('toggled');
+
+  if (icon !== null) {
+    icon.classList.toggle('toggled');
+  }
+}
+
+function handleColorPicker() {
+  if (!isPickrOn) {
+    pickr.show();
+    isPickrOn = true;
+  } else {
+    pickr.hide();
+    isPickrOn = false;
+  }
 }
 
 function handleEraser() {

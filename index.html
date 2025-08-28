@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sketch Pad</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/nano.min.css"/>
     <link rel="stylesheet" href="styles.css">
   </head>
 
@@ -22,19 +23,11 @@
       </div>
 
       <div class="button-container bar-item" id="colors">
-        <button class="color-button">
-            <div class="color" id="brush-color"></div>
+        <button class="color" id="color-button">
+            <div class="color-picker" id="brush-color"></div>
         </button>
         <span class="tooltip" id="color-tooltip">Brush color</span> 
-        <div class="color-container">
-          <div class="color-picker"></div>
-            <div class="config">
-              <div class="config-title"></div>
-              <div class="selected-color"></div>
-            </div>
-        </div>
       </div>
-
 
       <div class="button-container bar-item" id="clear-container">
         <button class="clear" id="clear-button">
@@ -43,6 +36,7 @@
         <span class="tooltip" id="clear-tooltip">Clear canvas</span>
       </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
     <script src="main.js"></script>
   </body>
 </html>
