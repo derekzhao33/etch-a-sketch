@@ -19,6 +19,7 @@ body {
   flex: 1;
   flex-wrap: wrap;
   border-width: 1px;
+  position: relative;
 }
 
 .column {
@@ -176,7 +177,7 @@ button:active:hover .icon {
 }
 
 #colors {
-  --color: blue;
+  --color: black;
 }
 
 

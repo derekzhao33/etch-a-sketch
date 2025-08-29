@@ -1,6 +1,10 @@
 // TODO: add colors (color picker or set amount of colors)
 // TODO: figure out how to deal with window resizing
 // TODO: implement ability to save stuff
+// TODO: fix pickr not opening
+// TODO: undo button maybe
+// TODO: fix second grid's size
+
 const body = document.body;
 const bar = document.querySelector('.bar');
 const slider = document.querySelector('.range-slider');
@@ -13,10 +17,11 @@ const clearIcon = document.getElementById('clear-icon');
 const clearTooltip = document.getElementById('clear-tooltip') 
 const colorButton = document.getElementById('color-button');
 const colorTooltip = document.getElementById('color-tooltip');
+const displayColor = document.getElementById('colors');
 
 const pickr = Pickr.create({
     el: '.color-picker',
-    theme: 'nano', // or 'monolith', or 'nano'
+    theme: 'nano', // or 'monolith',or 'nano'
 
     swatches: [
         'rgba(244, 67, 54, 1)',
@@ -48,24 +53,20 @@ const pickr = Pickr.create({
 
         // Input / output Options
         interaction: {
-            hex: true,
+            hex: false,
             rgba: false,
             hsla: false,
             hsva: false,
             cmyk: false,
             input: false,
             clear: false,
-            save: true
+            save: false
         }
     }
 });
 
 const padHeight = window.innerHeight;
 const padWidth = window.innerWidth - 75;
-
-const buttonHoverColor = '#33335aff';
-const buttonClickColor = '#D7D7DC'
-const sliderThumbInputDimension = '20px';
 
 let isEraserOn = false;
 let isPickrOn = false;
@@ -84,11 +85,24 @@ function addEventListeners() {
   handleTooltip(colorButton, colorTooltip, 'mousedown');
 
   configureButtons();
+
+  handleColorChange();
 }
+
+function handleColorChange() {
+  pickr.on('change', (color) => {
+    const hexColor = color.toHEXA().toString();
+    currBrushColor = hexColor;
+    displayColor.style.setProperty('--color', currBrushColor);
+  })
+}
+
+document.querySelector('.test').addEventListener('click', () => {
+  pickr.hide();
+})
 
 function configureButtons() {
   colorButton.addEventListener('click', () => {
-    handleButtonToggle(colorButton);
     handleColorPicker();
   })
 
@@ -111,13 +125,13 @@ function handleButtonToggle(button, icon = null) {
 }
 
 function handleColorPicker() {
-  if (!isPickrOn) {
-    pickr.show();
-    isPickrOn = true;
-  } else {
-    pickr.hide();
-    isPickrOn = false;
-  }
+  pickr.on('hide', () => {
+    console.log('2')
+    colorButton.classList.toggle('toggled');
+  }).on('init', () => {
+    console.log('1')
+    colorButton.classList.toggle('toggled');
+  })
 }
 
 function handleEraser() {
@@ -154,9 +168,8 @@ function handleTooltip(element, tooltip, inputType) {
 function changeBrushThickness() {
   slider.addEventListener('mouseup', () => {
     currGridDimension = slider.value;
-    createGrid(currGridDimension);
-    
-    const firstContainer = document.querySelector('.container:first-of-type');
+    addNewGrid();
+  
     const lastContainer = document.querySelector('.container:last-of-type');
 
     lastContainer.style.position = 'absolute';
@@ -170,6 +183,11 @@ function changeBrushThickness() {
   })
 }
 
+function addNewGrid() {
+  const newGrid = createGrid(currGridDimension);
+  body.appendChild(newGrid);
+  gridList.push(newGrid);
+}
 
 function checkMouseDown() {
   document.addEventListener('pointerdown', () => {
@@ -184,21 +202,10 @@ function checkMouseDown() {
 function clearGrid() {
   gridList.forEach((grid) => {grid.remove()});
 
-  createGrid(currGridDimension);
+  addNewGrid();
 }
 
-function createGrid(columns) {
-  const container = document.createElement('div');
-  container.className = 'container';
-  body.appendChild(container);
-
-  for (let i = 0; i < columns; i++) {
-    const column = createColumn(columns);
-    container.appendChild(column);
-  }
-
-  gridList.push(container);
-
+function handleDrawingLogic(container, color, target) {
   container.addEventListener('mouseover', (e) => {
     if (isMouseDown && e.target.classList.contains('box')) {
       e.target.style.backgroundColor = currBrushColor;
@@ -214,38 +221,59 @@ function createGrid(columns) {
   });
 }
 
-function determineNumBoxesInColumn(columns) {
-  const heightWidthRatio = padHeight / padWidth;
+function createGrid(columns) {
+  const container = document.createElement('div');
+  container.className = 'container';
+
+  for (let i = 0; i < columns; i++) {
+    const column = createColumn(columns, padHeight, padWidth);
+    container.appendChild(column);
+  }
+
+  handleDrawingLogic(container, currBrushColor, 'box');
+
+  return container;
+}
+
+function determineNumBoxesInColumn(columns, totalHeight, totalWidth) {
+  const heightWidthRatio = totalHeight / totalWidth;
   const numBoxesRaw = columns * heightWidthRatio;
   const numBoxesRounded = Math.floor(numBoxesRaw);
 
   return numBoxesRounded;
 }
 
-function createColumn(columns) {
+function createColumn(columns, totalHeight, totalWidth) {
   const column = document.createElement('div');
   column.className = 'column';
   
-  column.style.height = padHeight;
-  column.style.width = padWidth / columns;
+  column.style.height = totalHeight;
+  column.style.width = totalWidth / columns;
 
-  const boxes = determineNumBoxesInColumn(columns);
+  const boxes = determineNumBoxesInColumn(columns, totalHeight, totalWidth);
 
   for (let i = 0; i < boxes; i++) {
-    const box = document.createElement('div')
-
-    box.classList.add('box');
+    const box = createBox(columns, totalHeight, totalWidth);
     column.appendChild(box);
-
-    box.style.height = padHeight / (columns ** 2);
-    box.style.width = padWidth / (columns ** 2);
   }
 
   return column;
 }
 
+function createBox(numContainers, totalHeight, totalWidth) {
+  const box = document.createElement('div')
+
+  box.classList.add('box');
+
+  box.style.height = totalHeight / (numContainers ** 2);
+  box.style.width = totalWidth / (numContainers ** 2);
+
+  return box
+}
+
 function main() {
-  createGrid(currGridDimension);
+  addNewGrid();
+
   checkMouseDown();
   addEventListeners();
 }
