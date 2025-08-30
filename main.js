@@ -17,11 +17,10 @@ const clearIcon = document.getElementById('clear-icon');
 const clearTooltip = document.getElementById('clear-tooltip') 
 const colorButton = document.getElementById('color-button');
 const colorTooltip = document.getElementById('color-tooltip');
-const displayColor = document.getElementById('colors');
 
 const pickr = Pickr.create({
-    el: '.color-picker',
-    theme: 'nano', // or 'monolith',or 'nano'
+    el: '#color-button',
+    theme: 'nano', // or 'monolith', or 'classic'
 
     swatches: [
         'rgba(244, 67, 54, 1)',
@@ -93,18 +92,12 @@ function handleColorChange() {
   pickr.on('change', (color) => {
     const hexColor = color.toHEXA().toString();
     currBrushColor = hexColor;
-    displayColor.style.setProperty('--color', currBrushColor);
+    colorButton.style.setProperty('--color', currBrushColor);
   })
 }
 
-document.querySelector('.test').addEventListener('click', () => {
-  pickr.hide();
-})
-
 function configureButtons() {
-  colorButton.addEventListener('click', () => {
-    handleColorPicker();
-  })
+  handleColorButton();
 
   eraserButton.addEventListener('click', () => {
     handleButtonToggle(eraserButton, eraserIcon);
@@ -124,13 +117,11 @@ function handleButtonToggle(button, icon = null) {
   }
 }
 
-function handleColorPicker() {
+function handleColorButton() {
   pickr.on('hide', () => {
-    console.log('2')
-    colorButton.classList.toggle('toggled');
-  }).on('init', () => {
-    console.log('1')
-    colorButton.classList.toggle('toggled');
+    handleButtonToggle(colorButton);
+  }).on('show', () => {
+    handleButtonToggle(colorButton);
   })
 }
 

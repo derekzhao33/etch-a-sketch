@@ -107,10 +107,7 @@ body {
   border-radius: 5px;
   box-shadow: 0 1px 2px #babac4;
   top: 5%;
-  left: 100%;
-}
-
-.tooltip {
+  left: 65px;
   position: absolute;
 }
 
@@ -119,7 +116,12 @@ body {
   left: 75%;
 }
 
-.icon, button {
+button {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
   padding: 0;
   aspect-ratio: 1 / 1;
   border-style: none;
@@ -129,35 +131,13 @@ body {
 
 .icon {
   width: 65%;
-}
-
-button {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.button-container {
-  position: relative;
-  width: 80%;
   aspect-ratio: 1 / 1;
-  border-radius: 10px;
 }
 
 button:hover,
-button:hover .icon,
-.button-container:hover {
+button:hover .icon {
   background-color: #D1D1D6;
   cursor: pointer;
-}
-
-#eraser-container {
-  margin: 0 0 10px 0;
-}
-
-#clear-container {
-  margin: 10px 0 5px 0;
 }
 
 button:active:hover,
@@ -169,15 +149,15 @@ button:active:hover .icon {
   background-color: #D1D1D6;
 }
 
-.color-picker {
-  width: 55%;
-  aspect-ratio: 1 / 1;
-  border-radius: 5px;
-  background-color: var(--color);
+.color {
+  --color: black;
 }
 
-#colors {
-  --color: black;
+#color-icon {
+  border-radius: 5px;
+  width: 55%;
+  aspect-ratio: 1 / 1;
+  background-color: var(--color);
 }
 
 
